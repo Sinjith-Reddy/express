@@ -18,7 +18,7 @@ pipeline {
         // starting application
         stage('start application'){
             steps{
-            sh 'node examples/hello-world'
+            sh 'pm2 start examples/hello-world/index.js'
             }
         }
     }
