@@ -1,16 +1,12 @@
 pipeline {
     agent { label 'nodejs'}
-
     stages {
-
-        // Fetch code from  github
-
+        // Fetch code from  github  
         stage('checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/Sinjith-Reddy/express.git'
             }
         }
-
         // Build application
 
         stage('Build'){
@@ -19,9 +15,10 @@ pipeline {
             }
         }
         // starting application
-
         stage('start application'){
-            sh 'npm start'
+            steps{
+            sh 'node examples/hello-world'
+            }
         }
     }
 }
