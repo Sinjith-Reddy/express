@@ -4,13 +4,14 @@ pipeline {
         // Fetch code from  github  
         stage('checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/Sinjith-Reddy/express.git --depth 1'
+                git branch: 'main', url: 'https://github.com/Sinjith-Reddy/express.git'
             }
         }
         // Build application
 
         stage('Build'){
             steps{
+                sh 'cd express'
                 sh 'npm install'
             }
         }
