@@ -4,7 +4,7 @@ pipeline {
         // Fetch code from  github  
         stage('checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/Sinjith-Reddy/express.git'
+                git branch: 'master', url: 'https://github.com/Sinjith-Reddy/express.git'
             }
         }
         // Build application
