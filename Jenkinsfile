@@ -11,7 +11,7 @@ pipeline {
 
         stage('Build'){
             steps{
-                sh 'cd express'
+                //sh 'cd express'
                 sh 'npm install'
             }
         }
