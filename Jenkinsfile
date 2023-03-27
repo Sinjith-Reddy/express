@@ -1,13 +1,15 @@
 pipeline {
     agent { label 'nodejs'}
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerID')
+        DockerHub = credentials('DockerHub')
+        REMOTE_SERVER = '3.91.213.166'
+        REMOTE = credentials('EC2')
     }
     stages {
         // Fetch code from  github  
         stage('checkout') {
             steps {
-                git branch: 'master', url: 'https://github.com/Sinjith-Reddy/express.git'
+                git branch: 'main', url: 'https://github.com/Sinjith-Reddy/express.git'
             }
         }
         // Build application
@@ -19,20 +21,19 @@ pipeline {
         // build docker image
         stage('Build Docker Image'){
             steps {
-            sh 'docker build -t hello-world-expressjs:latest .'
-            sh 'docker tag hello-world-expressjs sinjithreddy/hello-world-expressjs:latest'
+            sh 'docker build -t sinjithreddy/hello-world-js:latest .'
             }
         }
-        //Login and Push image to DockerHub 
+       //Login and Push image to DockerHub 
         stage ('Login to DockerHub'){
             steps {
-                sh  'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh  'echo $DockerHub_PSW | docker login -u $DockerHub_USR --password-stdin'
             }
         }
         
         stage('Push image to DockerHub'){
             steps{
-                sh 'docker push sinjithreddy/hello-world-expressjs:latest'
+                sh 'docker push sinjithreddy/hello-world-js:latest'
             }
             post {
               always {
@@ -41,5 +42,16 @@ pipeline {
             }
         }
         //deploy docker image
+          stage('deploy docker image'){
+              steps{
+                  sshagent(credentials:['EC2']) {
+                      sh "ssh -o StrictHostKeyChecking=no ${REMOTE_USR}@${REMOTE_SERVER} 'docker stop hello-world-js || true && docker rm hello-world-js || true'"
+                      sh "ssh -o StrictHostKeyChecking=no ${REMOTE_USR}@${REMOTE_SERVER} 'docker pull sinjithreddy/hello-world-js'"
+                      sh "ssh -o StrictHostKeyChecking=no ${REMOTE_USR}@${REMOTE_SERVER} 'docker run --name hello-world-js -d -p 8000:3000 -t sinjithreddy/hello-world-js'"
+                  }
+              }
+            
+          }
+          
     }
 }
