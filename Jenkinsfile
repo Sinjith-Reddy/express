@@ -20,7 +20,7 @@ pipeline {
         stage('Build Docker Image'){
             steps {
             sh 'docker build -t hello-world-expressjs:latest .'
-            sh 'docker tag Hello-world-expressJs sinjithreddy/hello-world-expressjs:latest'
+            sh 'docker tag hello-world-expressjs sinjithreddy/hello-world-expressjs:latest'
             }
         }
         //Login and Push image to DockerHub 
