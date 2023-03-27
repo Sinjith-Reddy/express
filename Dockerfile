@@ -4,6 +4,8 @@ FROM node
 #install package manager pm2 
 RUN npm install pm2 -g
 
+WORKDIR /usr/src/app/
+
 #copying file
 COPY . .
 
