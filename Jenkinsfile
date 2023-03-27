@@ -1,7 +1,7 @@
 pipeline {
     agent { label 'nodejs'}
     environment {
-        DOCKERHUB_CREDENTIALS = credentials()
+        DOCKERHUB_CREDENTIALS = credentials('dockerID')
     }
     stages {
         // Fetch code from  github  
