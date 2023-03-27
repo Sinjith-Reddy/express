@@ -35,11 +35,11 @@ pipeline {
                 sh 'docker push sinjithreddy/hello-world-expressjs:latest'
             }
         }
-        post {
-            always {
+            post {
+              always {
                 sh 'docker logout'
+              }
             }
-        }
         //deploy docker image
     }
 }
